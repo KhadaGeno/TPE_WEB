@@ -1,0 +1,15 @@
+<?php 
+$isAdmin = AuthHelper::verify(); 
+$isLoggin = AuthHelper::checkSession();
+?>
+
+<h1 class= "text-center text-white">Juegos</h1>
+<ul class="list-group">
+    <?php foreach ($games as $game) { ?>
+        <li class="list-group-item">
+            <a href="content/<?= $game->id_genero ?>" class="text-decoration-none text-dark"> <?= $game->nombre ?> </a> 
+        </li>
+    <?php } ?>
+</ul>
+<a href="home" class="btn btn-secondary"><-volver</a>
+

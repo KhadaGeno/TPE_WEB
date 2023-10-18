@@ -1,0 +1,27 @@
+<?php require 'templates/header.phtml';
+$isLoggin = AuthHelper::checkSession();
+$isAdmin = AuthHelper::verify(); 
+?>
+
+<div class="mt-5 w-25 mx-auto">
+    <form method="POST" action="auth">
+        <div class="form-group">
+            <label class="text-white" for="usuario">Usuario</label>
+            <input type="text" required class="form-control" id="usuario" name="usuario" aria-describedby="userHelp">
+        </div>
+        <div class="form-group">
+            <label class="text-white" for="password">Password</label>
+            <input type="password" required class="form-control" id="password" name="contrasenia">
+        </div>
+
+        <?php if ($error) : ?>
+            <div class='alert alert-danger' role='alert'>
+                <?= $error ?>
+            </div> 
+        <?php endif ?>
+       
+        <button type="submit" class="btn btn-primary mt-3">Entrar</button>
+    </form>
+</div>
+
+<?php require 'templates/footer.phtml' ?>

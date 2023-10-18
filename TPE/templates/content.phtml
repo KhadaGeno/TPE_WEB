@@ -1,0 +1,19 @@
+<?php
+$isLoggin = AuthHelper::checkSession();
+$isAdmin = AuthHelper::verify();
+if (isset($game[0]) && isset($game[0]->nombre)) {
+    $Nombre = $game[0]->nombre;
+    $descripcion = $game[0]->Descripcion;
+    $precio = $game[0]->precio;
+?>
+
+<div class="container mt-4">
+    <h1 class="display-4 text-white"><?= $Nombre; ?></h1>
+    <h2 class="text-white"> precio: <?= $precio; ?> $</h2>
+    <p class="mt-4 text-white"><?= $descripcion; ?></p>
+</div>
+<?php 
+} else {
+    echo "No se pudo acceder al contenido del producto";
+}
+?>
