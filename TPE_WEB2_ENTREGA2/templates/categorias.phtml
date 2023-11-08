@@ -1,0 +1,17 @@
+<?php require 'templates/header.phtml';
+AuthHelper::checkSession();
+?>
+
+<h1 class= "text-center text-white">Categorias</h1>
+<ul class="list-group">
+    <?php foreach ($categorias as $categoria): ?>   
+        <li class="list-group-item">
+            <a href="categoria/<?= $categoria->id_genero ?>" class="text-decoration-none text-dark"><?= $categoria->nombre_gen ?></a>
+        </li>
+    <?php endforeach ?>
+    <li class="list-group-item">
+        <a href="juegos" class="text-decoration-none text-dark">Todos</a>
+    </li>
+</ul>
+
+<?php require 'templates/footer.phtml' ?>
