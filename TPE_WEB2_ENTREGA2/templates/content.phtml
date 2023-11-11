@@ -1,0 +1,18 @@
+<?php
+require 'templates/header.phtml';
+if (isset($producto)):
+    $nombre = $producto->nombre;
+    $descripcion = $producto->descripcion;
+    $precio = $producto->precio;
+    $nombreCategoria = $categoria->nombre_gen;
+?>
+
+<div class="container mt-4">
+    <h1 class="display-4 text-white"><?= $nombre; ?></h1>
+    <h2 class="text-white"> precio: <?= $precio; ?> $</h2>
+    <p class="mt-4 text-white"><?= $descripcion; ?></p>
+    <h3 class="text-white"> Categoria: <?= $nombreCategoria; ?> </h3>
+</div>
+
+<?php endif;
+require 'templates/footer.phtml'; ?>

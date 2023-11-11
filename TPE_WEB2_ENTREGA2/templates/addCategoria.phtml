@@ -1,0 +1,19 @@
+<?php require 'templates/header.phtml'; ?>
+
+<div class="mt-5 w-25 mx-auto">
+    <form method="POST" action="addCategoria">
+        <div class="form-group">
+            <label class="text-white" for="nombre">Nombre de la categoria</label>
+            <input type="text" required class="form-control" id="nombre" name="nombre" aria-describedby="userHelp">
+        </div>
+        <?php if (isset($error)): ?>
+            <div class='alert alert-danger' role='alert'>
+                <?= $error ?>
+            </div> 
+        <?php endif; ?>
+       
+        <button type="submit" class="btn btn-primary mt-3">Agregar</button>
+    </form>
+</div>
+
+<?php require 'templates/footer.phtml'; ?>
