@@ -1,0 +1,36 @@
+<?php require 'templates/header.phtml'; ?>
+
+<div class="mt-5 w-25 mx-auto">
+    <form method="POST" action="updateProducto/<?= $producto->id_producto ?>">
+        <div class="form-group">
+            <label class="text-white" for="nombre">Nuevo nombre</label>
+            <input type="text" required class="form-control" id="nombre" name="nombre" aria-describedby="userHelp" value =  "<?= $producto->nombre ?>">
+        </div>
+        <div class="form-group">
+            <label class="text-white" for="descripcion">Nueva descripcion</label>
+            <input type="text" required class="form-control" id="descripcion" name="descripcion" value =  "<?= $producto->descripcion ?>">
+        </div>
+        <div class="form-group">
+            <label class="text-white" for="precio">Nuevo precio</label>
+            <input type="number" required class="form-control" id="precio" name="precio" value =  "<?= $producto->precio ?>">
+        </div>
+        <div class="form-group">
+            <label class="text-white" for="categoria">Categoria</label>
+            <select name="categoria">
+                <?php foreach ($categorias as $categoria): ?>
+                    <option value="<?= $categoria->id_genero ?>"><?= $categoria->nombre_gen ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <?php if (isset($error)): ?>
+            <div class='alert alert-danger' role='alert'>
+                <?= $error ?>
+            </div> 
+        <?php endif; ?>
+       
+        <button type="submit" class="btn btn-primary mt-3">Editar</button>
+    </form>
+</div>
+
+<?php require 'templates/footer.phtml'; ?>

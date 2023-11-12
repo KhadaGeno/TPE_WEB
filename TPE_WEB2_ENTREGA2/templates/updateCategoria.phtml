@@ -1,0 +1,19 @@
+<?php require 'templates/header.phtml'; ?>
+
+<div class="mt-5 w-25 mx-auto">
+    <form method="POST" action="updateCategoria/<?= $categoria->id_genero ?>">
+        <div class="form-group">
+            <label class="text-white" for="nombre">Nuevo nombre de la categoria</label>
+            <input type="text" required class="form-control" id="nombre" name="nombre" aria-describedby="userHelp" value =  "<?= $categoria->nombre_gen ?>">
+        </div>
+        <?php if (isset($error)): ?>
+            <div class='alert alert-danger' role='alert'>
+                <?= $error ?>
+            </div> 
+        <?php endif; ?>
+       
+        <button type="submit" class="btn btn-primary mt-3">Editar</button>
+    </form>
+</div>
+
+<?php require 'templates/footer.phtml'; ?>
