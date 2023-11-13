@@ -46,9 +46,10 @@ class ProductosModel {
         return $productos;
     }
 
-    function addProducto ($nombre, $descripcion, $precio, $id_categoria) {
+    function addProducto ($nombre, $descripcion, $precio, $id_genero) {
         $query = $this->db->prepare('INSERT INTO productos ( nombre, descripcion, precio, id_genero) VALUES (?, ?, ?, ?)');
-        $query->execute([$nombre, $descripcion, $precio, $id_categoria]);
+        $query->execute([$nombre, $descripcion, $precio, $id_genero]);
+        return $this->db->lastInsertId();
     }
 
     function updateProducto ($nombre, $descripcion, $precio, $id_categoria, $id_producto) {

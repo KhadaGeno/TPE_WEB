@@ -50,7 +50,17 @@ class ProductosAPIController {
             $this->view->response("Producto no encontrado",400);
         }
     }
-    
+    function addProductos($params = null){
+        $addProducto = $this->getdata();
+        $nombre = $addProducto->nombre;
+        $descripcion = $addProducto->descripcion;
+        $precio = $addProducto->precio;
+        $id_genero = $addProducto->id_genero;
+        $id = $this->model->addProducto($nombre, $descripcion, $precio, $id_genero);
+        if($id>0){
+            $this->view->response("se agrego el producto",200);
+        }
+    }
 }
 
     
