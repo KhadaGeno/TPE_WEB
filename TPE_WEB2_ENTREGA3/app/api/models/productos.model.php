@@ -17,7 +17,12 @@ class ProductosModel {
         return $productos;
     }
 
-
+    function checkProductos(){
+        $query = $this->db->prepare('SELECT * FROM productos');
+        $query->execute();
+        $productos = $query->fetchAll(PDO::FETCH_OBJ);
+        return $productos;
+    }
     function getProductosMenosUno ($id) {
         $query = $this->db->prepare('SELECT * FROM productos WHERE id_producto != ?');
         $query->execute([$id]);
@@ -52,9 +57,10 @@ class ProductosModel {
         return $this->db->lastInsertId();
     }
 
-    function updateProducto ($nombre, $descripcion, $precio, $id_categoria, $id_producto) {
+    function putProducto ($nombre, $descripcion, $precio, $id_genero, $id_producto) {
         $query = $this->db->prepare('UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, id_genero = ? WHERE id_producto = ?');
-        $query->execute([$nombre, $descripcion, $precio, $id_categoria, $id_producto]);
+        $query->execute([$nombre, $descripcion, $precio, $id_genero, $id_producto]);
+        return true;
     }
 
     function deleteProducto ($id) {

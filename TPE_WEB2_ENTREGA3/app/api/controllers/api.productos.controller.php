@@ -1,16 +1,19 @@
 <?php
 require_once './app/api/views/api.view.php';
 require_once './app/api/models/productos.model.php';
+require_once './app/api/models/categoria.model.php';
 
 class ProductosAPIController {
 
     private $view;
-    private $model;
+    private $productosModel;
+    private $categoriaModel;
     private $data;
     
     function __construct () {
         $this->view = new ApiView();
-        $this->model = new ProductosModel();
+        $this->productosModel = new ProductosModel();
+        $this->categoriaModel = new CategoriaModel();
         $this->data = file_get_contents('php://input');
     }
     public function getdata () {
@@ -18,7 +21,7 @@ class ProductosAPIController {
     }
     function getProductos($params = []){
         if(empty($params)){
-        $sort = 'precio';
+        $sort = 'id_producto';
         $order = 'ASC';
             if(isset($_GET['order'])){
                 $order = $_GET['order'];
@@ -30,10 +33,10 @@ class ProductosAPIController {
                 $sort = $_GET['sort'];
                 $columnas = array('nombre','descripcion','precio');
                 if(!in_array($sort, $columnas)){
-                $sort = 'precio';
+                $sort = 'id_producto';
                 }
             }
-        $productos = $this->model->getProductos($order, $sort);
+        $productos = $this->productosModel->getProductos($order, $sort);
         if($productos){
             $this->view->response($productos,200);
         }else{
@@ -43,23 +46,74 @@ class ProductosAPIController {
     }
     function getProductosID($params = null){
         $idProducto = $params[':ID'];
-        $producto = $this->model->getProductosPorId($idProducto);
+        $producto = $this->productosModel->getProductosPorId($idProducto);
         if($producto){
             $this->view->response($producto,200);
         }else{
             $this->view->response("Producto no encontrado",400);
         }
     }
-    function addProductos($params = null){
+    function addProducto($params = null){
         $addProducto = $this->getdata();
         $nombre = $addProducto->nombre;
         $descripcion = $addProducto->descripcion;
         $precio = $addProducto->precio;
         $id_genero = $addProducto->id_genero;
-        $id = $this->model->addProducto($nombre, $descripcion, $precio, $id_genero);
+        $productos = $this->productosModel->checkProductos();
+        $categoria = $this->categoriaModel->getCategoriaUnica($id_genero);
+            foreach ($productos as $producto) {
+                if ($nombre == $producto->nombre) {
+                    $this->view->response("Bad request",400);
+                    die();
+                }
+            }
+            if(!$categoria){
+                $this->view->response("Bad request",400); 
+                die();  
+            }
+            
+        $id = $this->productosModel->addProducto($nombre, $descripcion, $precio, $id_genero);
         if($id>0){
-            $this->view->response("se agrego el producto",200);
+            $this->view->response("se agrego el producto",201);
+        }else{
+            $this->view->response("Bad request",400);
         }
+    }
+    function putProducto($params = null){
+    if(empty($params[':ID'])){
+        $this->view->response('Page not found',404);
+    }else{
+        $putProducto = $this->getdata();
+        $id_producto = $params[':ID']; 
+        $nombre = $putProducto->nombre;
+        $descripcion = $putProducto->descripcion;
+        $precio = $putProducto->precio;
+        $id_genero = $putProducto->id_genero;
+        $productos = $this->productosModel->getProductosMenosUno($id_producto);
+        $producto = $this->productosModel->getProductoUnico($id_producto);
+        $categoria = $this->categoriaModel->getCategoriaUnica($id_genero);
+        if (!$producto) {
+            $this->view->response("Bad request", 400);
+            die();
+        }
+        foreach ($productos as $producto) {
+            if ($nombre == $producto->nombre) {
+                $this->view->response("Bad request", 400);
+                return;
+            }
+        }
+        if(!$categoria){
+            $this->view->response("Bad request",400); 
+            die();  
+        }
+
+        $PUT = $this->productosModel->putProducto($nombre, $descripcion, $precio, $id_genero, $id_producto);
+        if($PUT){
+            $this->view->response('se actualizaron los datos correctamente',201);
+        }else{
+            $this->view->response('Bad request',400);
+        }
+    }
     }
 }
 
